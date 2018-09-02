@@ -29,7 +29,6 @@ food.penup()
 food.goto(0,100)
 
 #Score
-global score
 score = 0
 scoreText = turtle.Turtle()
 scoreText.speed(0)
@@ -37,8 +36,19 @@ scoreText.shape("square")
 scoreText.color("white")
 scoreText.penup()
 scoreText.hideturtle()
-scoreText.goto(0,260)
+scoreText.goto(200,260)
 scoreText.write("Score: %d" % (score))
+
+#High Score
+high_score = 0
+high_score_text = turtle.Turtle()
+high_score_text.speed(0)
+high_score_text.shape("square")
+high_score_text.color("white")
+high_score_text.penup()
+high_score_text.hideturtle()
+high_score_text.goto(200,230)
+high_score_text.write("High-Score: %d" % (high_score))
 
 segments = []
 
@@ -52,7 +62,9 @@ def die():
     #clear segments list
     segments.clear()
     scoreText.clear()
+    high_score_text.clear()
     scoreText.write("Score: %d" % (score))
+    high_score_text.write("High-Score: %d" %(high_score))
 
 
 #Functions
@@ -97,6 +109,8 @@ while True:
     #check for collision with border
 
     if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
+        if score>high_score:
+            high_score = score
         score = 0
         die()
        
@@ -140,6 +154,8 @@ while True:
     #check for head collision with the body segments
     for segment in segments:
         if segment.distance(head) < 20:
+            if score>high_score:
+                high_score = score
             score=0
             die()
             
