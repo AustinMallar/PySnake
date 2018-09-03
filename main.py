@@ -1,8 +1,23 @@
 import turtle
 import time
 import random
+import os
 
 delay = 0.1
+
+#File to store high score, create if not found.
+high_score=0
+
+if 'high_score.txt' not in os.listdir():
+    with open('high_score.txt','w') as high_score_file:
+        high_score_file.close()
+else:
+    with open('high_score.txt','r') as high_score_file:
+        if high_score_file.read() == '':
+            high_score = 0
+        else:
+            high_score = int(high_score_file.read())
+            high_score_file.close()
 
 #Snake window
 wn = turtle.Screen()
@@ -40,7 +55,6 @@ scoreText.goto(200,260)
 scoreText.write("Score: %d" % (score))
 
 #High Score
-high_score = 0
 high_score_text = turtle.Turtle()
 high_score_text.speed(0)
 high_score_text.shape("square")
@@ -49,6 +63,7 @@ high_score_text.penup()
 high_score_text.hideturtle()
 high_score_text.goto(200,230)
 high_score_text.write("High-Score: %d" % (high_score))
+
 
 segments = []
 
@@ -111,6 +126,10 @@ while True:
     if head.xcor()>290 or head.xcor()<-290 or head.ycor()>290 or head.ycor()<-290:
         if score>high_score:
             high_score = score
+            with open('high_score.txt','w') as high_score_file:
+                high_score_file.write(str(high_score))
+                high_score_file.close()
+
         score = 0
         die()
        
@@ -156,6 +175,9 @@ while True:
         if segment.distance(head) < 20:
             if score>high_score:
                 high_score = score
+                with open('high_score.txt','w') as high_score_file:
+                    high_score_file.write(str(high_score))
+                    high_score_file.close()
             score=0
             die()
             
